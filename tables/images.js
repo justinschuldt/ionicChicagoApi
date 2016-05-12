@@ -5,11 +5,11 @@
 var table = require('azure-mobile-apps').table(),
     logger = require('azure-mobile-apps/src/logger');
 
-table.columns = {
-    "title": "string",
-    "tags": "string",
-    "imageUrl": "string"
-};
+// table.columns = {
+//     "title": "string",
+//     "tags": "string",
+//     "imageUrl": "string"
+// };
 
 // For details of the Notification Hubs JavaScript SDK,
 // see https://azure.microsoft.com/en-us/documentation/articles/notification-hubs-nodejs-how-to-use-notification-hubs/
