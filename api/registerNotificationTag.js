@@ -9,7 +9,10 @@ module.exports = {
         // Get the notification hub used by the mobile app.
 		var push = req.azureMobile.push;
             installationId = req.get('X-ZUMO-INSTALLATION-ID'),
-		    tags = [request.body.tag];
+		    tags = [request.body.tag.id],
+			usersTagsTable = req.azureMobile.tables('users_tags');
+			
+			console.log('req.azureMobile.user.id: ', req.azureMobile.user.id);
 
 		// Define an update tags operation.
 		var updateOperation = [{
@@ -24,6 +27,11 @@ module.exports = {
 				logger.error('An error occurred when adding tags', error);
 				res.status(error.statusCode).send(error.detail);
 			} else {
+				usersTagsTable.insert({
+					usersId: req.azureMobile.user.id,
+					tagsId: req.body.tag.id
+				}).then(result => console.log('users_tags result: ', result));
+				
 				res.status(200).send(tag);
 			}
 		});
