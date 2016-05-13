@@ -5,7 +5,7 @@ module.exports = {
         var imageTable = req.azureMobile.tables('images');
         var promiseArr = []
         imageTable.where({}).read().then(results => {
-            console.log('table results ', results);
+            //console.log('table results ', results);
             results.forEach(item => {
                 var prom = new Promise(function(resolve, reject){
                     var query = {
@@ -14,10 +14,10 @@ module.exports = {
                             { name: 'imagesId', value: item.id }
                         ]
                     };
-                    console.log('sql: ', query);
+                    //console.log('sql: ', query);
                     req.azureMobile.data.execute(query)
                         .then(function (results) {
-                            console.log(results)
+                            //console.log(results)
                             item.tags = results;
                             resolve(item);
                     }, error => reject(error))

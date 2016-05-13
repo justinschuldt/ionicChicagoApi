@@ -2,8 +2,13 @@ module.exports = {
     get: function (req, res, next) {
         console.log('headers: ', req.headers);
         
-        console.log('req.azureMobile.user: ', req.azureMobile.user);
-        console.log('req.user: ', req.user);
+        if(req.azureMobile.user){
+            console.log('req.azureMobile.user: ', req.azureMobile.user);
+        }
+        if(req.user){
+            console.log('req.user: ', req.user);
+        }
+        
         var usersId = req.azureMobile.user.id;
         console.log('usersId: ', usersId);
         
