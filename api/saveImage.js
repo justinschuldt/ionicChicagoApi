@@ -1,20 +1,32 @@
 var azure = require('azure-storage');
 var sql = require('mssql');
-
+var fs = require("fs")
 var blobSvc = azure.createBlobService();
-blobSvc.createContainerIfNotExists('meetupphotos2', {publicAccessLevel : 'blob'}, function(error, result, response){
+blobSvc.createContainerIfNotExists('meetupphotos2', {publicAccessLevel: 'container'}, function(error, result, response){
     if(!error){
         console.log('container is set up!');
         //console.log('result: ', result);
         //console.log('response: ', response);
-      // Container exists and allows
-      // anonymous read access to blob
-      // content and metadata within this container
+    // Container exists and allows
+    // anonymous read access to blob
+    // content and metadata within this container
     }
 });
 
+
 module.exports = {
     post: function (req, res, next) {
+        var fileName = Date.now() + '.jpeg'
+        var imagesId;
+        var resourceName;
+        
+        fs.writeFile('./images/' + fileName, req.body.imageString, 'base64', function(err) {
+            if(err){
+                console.err('fs.writeFile err: ', err);
+                res.status(500).send(err);
+            }
+        
+
         //res.status(200).send('POST worked!');
         var imagesTable = req.azureMobile.tables('images');
         var tagsTable = req.azureMobile.tables('tags');
@@ -24,6 +36,7 @@ module.exports = {
         var promiseArr = [];
         console.log('req.body.title: ', req.body.title);
         console.log('req.body.tags: ', req.body.tags);
+        //console.log('req.body.imageString: ', req.body.imageString);
        
        if(req.body.tags && req.body.tags.length >= 1){
           req.body.tags.forEach(item => {
@@ -42,20 +55,12 @@ module.exports = {
        } 
         
 
-        var options = {
-            contentSettings: {
-                contentType: 'image/jpeg',
-                contentEncoding: 'base64'
-            }
-        };
-        var imagesId;
-        var resourceName;
         var prom = new Promise(function(resolve, reject){
-            blobSvc.createBlockBlobFromText('meetupphotos2', Date.now() + '.jpg', req.body.base64Image, options, function(error, result, response){
+            blobSvc.createBlockBlobFromLocalFile('meetupphotos2', fileName, './images/' + fileName,  function(error, result, response){
                 if(!error){
-                    console.log('result: ', result);
+                    console.log('blob result: ', result);
                     //console.log('response: ', response);
-                    resourceName = result.blob;
+                    resourceName = result;
                     resolve();
                     //res.status(200).send(result);
                 } else {
@@ -74,13 +79,18 @@ module.exports = {
                 console.log('tableResult:', tableResult);
                     
                 bindTagsToImage(imagesTagsTable, tagsArr, imagesId).then(result =>{
-                    res.status(200).send();
+                    //delete the file now that we're done with it
+                    fs.unlink('./images/' + fileName);
+                    res.status(200).send(tableResult);
+                    
                 }, error => res.status(500).send(error))
                     
             }, error => Promise.reject(error))
             
 
         }, error => res.status(500).send(error))
+        
+        });
        
     }, 
     get: function (req, res, next) {
