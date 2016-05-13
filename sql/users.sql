@@ -9,7 +9,6 @@ CREATE TABLE [dbo].[users] (
     [lastName]          NVARCHAR (60)     NULL,
 	[uuid]				  NVARCHAR (455)		NULL,
     PRIMARY KEY NONCLUSTERED ([id] ASC),
-	CONSTRAINT [AK_users_email] UNIQUE ([email]),
 	CONSTRAINT [AK_users_uuid] UNIQUE ([uuid])
 );
 
