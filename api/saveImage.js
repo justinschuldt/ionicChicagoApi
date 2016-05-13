@@ -22,8 +22,8 @@ module.exports = {
         
         fs.writeFile('./images/' + fileName, req.body.imageString, 'base64', function(err) {
             if(err){
-                console.err('fs.writeFile err: ', err);
-                res.status(500).send(err);
+                console.error('fs.writeFile err: ', err);
+                //res.status(500).send(err);
             }
         
 
