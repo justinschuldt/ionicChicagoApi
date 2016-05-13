@@ -22,6 +22,8 @@ module.exports = {
 
         var tagsArr = [];
         var promiseArr = [];
+        console.log('req.body.title: ', req.body.title);
+        console.log('req.body.tags: ', req.body.tags);
        
        if(req.body.tags && req.body.tags.length >= 1){
           req.body.tags.forEach(item => {
@@ -67,7 +69,7 @@ module.exports = {
         
         Promise.all(promiseArr).then(result => {
             console.log('tagsArr: ', tagsArr);
-            saveToTable(imagesTable, resourceName, req.body.title).then(tableResult =>{
+            saveToTable(imagesTable, resourceName, req.body.title, req.body.uuid).then(tableResult =>{
                 imagesId = tableResult.id;
                 console.log('tableResult:', tableResult);
                     
@@ -86,10 +88,11 @@ module.exports = {
     }
 };
 
-function saveToTable (table, resourceName, title) {
+function saveToTable (table, resourceName, title, uuid) {
     var obj = {
         imageUrl:  'https://ma1568895daa2242.blob.core.windows.net/meetupphotos2/' + resourceName,
-        title: title
+        title: title,
+        uuid: uuid
     }
     return table.insert(obj);
 }
