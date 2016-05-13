@@ -48,22 +48,23 @@ module.exports = {
         };
         var imagesId;
         var resourceName;
-        promiseArr.push(blobSvc.createBlockBlobFromText('meetupphotos2', Date.now() + '.jpg', req.body.base64Image, options, function(error, result, response){
-            if(!error){
-                //console.log('result: ', result);
-                //console.log('response: ', response);
-                resourceName = result.blob;
-                return Promise.resolve();
-
-                
-                //res.status(200).send(result);
-            } else {
-                Promise.reject(error);
-                console.error(error);
-                //res.status(500).send(error);
-            }
+        var prom = new Promise(function(resolve, reject){
+            blobSvc.createBlockBlobFromText('meetupphotos2', Date.now() + '.jpg', req.body.base64Image, options, function(error, result, response){
+                if(!error){
+                    console.log('result: ', result);
+                    //console.log('response: ', response);
+                    resourceName = result.blob;
+                    resolve();
+                    //res.status(200).send(result);
+                } else {
+                    reject(error);
+                    console.error(error);
+                    //res.status(500).send(error);
+                }
+            })
         })
-        )
+        promiseArr.push(prom);
+        
         Promise.all(promiseArr).then(result => {
             console.log('tagsArr: ', tagsArr);
             saveToTable(imagesTable, resourceName, req.body.title).then(tableResult =>{
