@@ -5,10 +5,14 @@
 
 // This is a base-level Azure Mobile App SDK.
 var express = require('express'),
-    azureMobileApps = require('azure-mobile-apps');
+    azureMobileApps = require('azure-mobile-apps'),
+    bodyParser = require('body-parser');
+    
 
 // Set up a standard Express app
 var app = express();
+
+app.use(bodyParser.json({limit: '50mb'}));
 
 // If you are producing a combined Web + Mobile app, then you should handle
 // anything like logging, registering middleware, etc. here
