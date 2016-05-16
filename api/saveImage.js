@@ -81,6 +81,9 @@ module.exports = {
                 bindTagsToImage(imagesTagsTable, tagsArr, imagesId).then(result =>{
                     //delete the file now that we're done with it
                     fs.unlink('./images/' + fileName);
+                    tagsArr.forEach(item =>{
+                        sendPush(req, item, tableResult);
+                    })
                     res.status(200).send(tableResult);
                     
                 }, error => res.status(500).send(error))
@@ -122,3 +125,29 @@ function bindTagsToImage(table, tagsArr, imagesId) {
         return Promise.resolve();
     }
 }
+
+    function sendPush(req, tag, tableResult) {
+        // This push uses a template mechanism, so we need a template
+        // var payload = '<toast><visual><binding template="Toast01"><text id="1">' + context.item.text + '</text></binding></visual></toast>';
+
+        if (req.azureMobile.push) {
+
+            // this is the template that was registered
+            var template2 = '{"data": {"title": "$(title)","message": "$(message)","style": "$(style)","picture": "$(picture)","summaryText": "$(summaryText)"}}';
+
+            var payload = '{ "message" : "New image with tag ' + tag.tag + ' has been uploaded!", "title" : "Ionic Chicago", "style": "picture", "picture": "' + tableResult.imageUrl +'", "summaryText": "' + tableResult.title +'"}';
+            
+
+            //req.azureMobile.push.send('AE5095D2-BFAD-4EDE-92A6-3916501F44BA', payload, function (error) {
+            req.azureMobile.push.send([tag.id], payload, function (error) {
+                if (error) {
+                    logger.error('Error while sending push notification: ', error);
+                    res.status(500).send(error);
+                } else {
+                    console.log('Push notification sent successfully!');
+                    res.status(200).send('Push notification sent successfully!');
+                }
+            });
+        }
+        
+    }
