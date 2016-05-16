@@ -9,6 +9,7 @@ module.exports = {
             sign = auth(context.configuration.auth).sign;
             //console.log('sign', sign);
 
+console.log('req.body: ', req.body);
         context.tables('users')
             .where({ uuid: req.body.uuid })
             .read()
@@ -23,9 +24,9 @@ module.exports = {
                     .insert({
                         uuid: req.body.uuid
                     })
-                    .then(function (user) {
+                    .then(user => {
                         res.json(createResponse(sign, user));
-                    })
+                    }, error => res.status(500).send(error))
                 }
                     
             })
