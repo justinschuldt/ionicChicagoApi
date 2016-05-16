@@ -1,6 +1,8 @@
 var azureMobileApp = require('azure-mobile-apps');
 
-var zumo = azureMobileApp();
+var zumo = azureMobileApp({
+    skipVersionCheck: true
+});
 
 // this turns on auth
 // zumo.tables.use(function (req, res, next) {
