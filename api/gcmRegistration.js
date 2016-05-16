@@ -34,7 +34,7 @@ module.exports = {
                     //now insert the new tag into the users_tags table
                     usersTagsTable.insert({
                         usersId: req.azureMobile.user.id,
-                        tagsId: req.body.tag.id
+                        tagsId: req.body.tag
                     }).then(result => console.log('users_tags result: ', result));
                     
                     //res.status(200).send(tag);
