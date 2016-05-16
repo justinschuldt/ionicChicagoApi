@@ -20,11 +20,11 @@ module.exports = {
 
             req.azureMobile.push.gcm.createOrUpdateTemplateRegistration(response, req.body.gcmRegistrationId, [req.body.tag], template2, {templateName: 'picture'}, function(error, response){
                 if (error) {
-                    //console.log('registration error: ', error);
+                    console.log('registration error: ', error);
                     res.status(500).send(error);
                 }
 
-                //console.log('registration response: ', response);
+                console.log('registration response: ', response);
                 res.status(200).send(response);
             })
 
