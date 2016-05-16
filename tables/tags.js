@@ -8,6 +8,7 @@ table.read(function (context) {
     return context.execute()
         .then(function (results) {
             console.log('tags results: ', results);
+            context.res.status(200).json(results);
         return results;
     });
 
