@@ -142,10 +142,10 @@ function bindTagsToImage(table, tagsArr, imagesId) {
             req.azureMobile.push.send([tag.id], payload, function (error) {
                 if (error) {
                     logger.error('Error while sending push notification: ', error);
-                    res.status(500).send(error);
+                    //res.status(500).send(error);
                 } else {
                     console.log('Push notification sent successfully!');
-                    res.status(200).send('Push notification sent successfully!');
+                    //res.status(200).send('Push notification sent successfully!');
                 }
             });
         }
