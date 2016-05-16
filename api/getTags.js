@@ -9,7 +9,9 @@ module.exports = {
             console.log('req.user: ', req.user);
         }
         
-        var usersId = req.azureMobile.user.id;
+        
+        //var usersId = req.azureMobile.user.id;
+        var usersId = '6f2b91c3-0657-477b-9716-ca9ceb6c9bbc';
         console.log('usersId: ', usersId);
         
         var query = {
