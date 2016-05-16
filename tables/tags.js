@@ -5,7 +5,12 @@ var table = azureMobileApps.table();
 
 table.read(function (context) {
     console.log('read tags table');
-    return context.execute();
+    return context.execute()
+        .then(function (results) {
+            console.log('tags results: ', results);
+        return results;
+    });
+
 });
 
 
