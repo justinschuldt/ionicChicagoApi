@@ -4,8 +4,8 @@ module.exports = {
     get: function (req, res, next) {
         var imageTable = req.azureMobile.tables('images');
         var promiseArr = []
-        imageTable.where({}).read().then(results => {
-            //console.log('table results ', results);
+        imageTable.orderByDescending('createdAt').read().then(results => {
+            console.log('table results ', results);
             results.forEach(item => {
                 var prom = new Promise(function(resolve, reject){
                     var query = {
