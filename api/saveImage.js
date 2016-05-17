@@ -84,7 +84,7 @@ module.exports = {
                     tagsArr.forEach(item =>{
                         sendPush(req, item, tableResult);
                     })
-                    res.status(200).send(tableResult);
+                    res.status(200).json(tableResult);
                     
                 }, error => res.status(500).send(error))
                     

@@ -27,7 +27,7 @@ module.exports = {
                 
             })
             Promise.all(promiseArr).then(result => {
-                res.status(200).send(result);
+                res.status(200).json(result);
             }, error => res.status(500).send(error))
         })
 

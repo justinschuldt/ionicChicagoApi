@@ -8,12 +8,12 @@ module.exports = {
         if(req.user){
             console.log('req.user: ', req.user);
         }
+
         
-        
-        var usersId = req.azureMobile.user.id;
-        
-        //this is just a failsafe
-        if (!usersId) {
+        if (req.azureMobile.user && req.azureMobile.user.id) {
+            var usersId = req.azureMobile.user.id;
+        } else {
+            //this is just a failsafe, in case the token is bad
             var usersId = '6f2b91c3-0657-477b-9716-ca9ceb6c9bbc';
         }
         console.log('usersId: ', usersId);
@@ -28,7 +28,7 @@ module.exports = {
         req.azureMobile.data.execute(query)
             .then(function (result) {
                 console.log('query result: ', result)
-                res.status(200).send(result);
+                res.json(result);
                 
         }, error => res.status(500).send(error))
 
