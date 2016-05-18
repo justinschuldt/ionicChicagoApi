@@ -4,6 +4,7 @@ var azureMobileApps = require('azure-mobile-apps');
 var table = azureMobileApps.table();
 
 table.read(function (context) {
+    // This is verbose for debugging
     console.log('read tags table');
     return context.execute()
         .then(function (results) {
